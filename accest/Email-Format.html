@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Format Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-2xl bg-white p-6 rounded-xl shadow-lg">
+    <h2 class="text-2xl font-semibold mb-4 text-center text-blue-700">Email Format Generator</h2>
+
+    <textarea id="inputData" class="w-full p-3 border border-gray-300 rounded-lg mb-4" placeholder="Paste your row data here..."></textarea>
+
+    <div class="flex justify-between gap-2 mb-4">
+      <button onclick="generateEmail()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition">Generate</button>
+      <button onclick="pasteFromClipboard()" class="w-24 bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-2 rounded-lg transition">Paste</button>
+    </div>
+
+    <div id="output" class="mt-6 hidden space">
+
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <label class="font-medium text-gray-700 block mb-1">Email:</label>
+        <div class="flex justify-between items-center">
+          <span id="email" class="text-gray-700 text-sm break-all"></span>
+          <button onclick="copyToClipboard('email')" class="text-blue-500 hover:text-blue-700">🔗</button>
+        </div>
+      </div>
+
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <label class="font-medium text-gray-700 block mb-1">Subject:</label>
+        <div class="flex justify-between items-center">
+          <span id="subject" class="text-gray-700 text-sm break-all">Payment Received For Shahid Tatkal</span>
+          <button onclick="copyToClipboard('subject')" class="text-blue-500 hover:text-blue-700">🔗</button>
+        </div>
+      </div>
+
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <label class="font-medium text-gray-700 block mb-1">Message:</label>
+        <div class="flex justify-end mb-2">
+          <button onclick="copyToClipboard('message')" class="text-blue-500 hover:text-blue-700">🔗</button>
+        </div>
+        <div id="message" class="bg-gray-100 p-4 rounded-lg text-sm text-gray-800 whitespace-pre-wrap"></div>
+      </div>
+
+      <div class="text-center">
+        <button onclick="sendEmail()" class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition">Send Email</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function copyToClipboard(id) {
+      const el = document.getElementById(id);
+      const text = el.innerText || el.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Copied: ' + text);
+      });
+    }
+
+    async function pasteFromClipboard() {
+      try {
+        const text = await navigator.clipboard.readText();
+        const input = document.getElementById("inputData");
+        input.value = ""; // clear previous
+        input.value = text.trim(); // paste new
+      } catch (err) {
+        alert("Failed to read clipboard content.");
+      }
+    }
+
+    let email = '', subject = '', message = '';
+
+    function generateEmail() {
+      const row = document.getElementById("inputData").value.trim();
+      if (!row) return alert("Please paste the row data.");
+      const parts = row.split(/\t+/); // tab-separated
+
+      const user_name = parts[0];
+      const password = parts[1];
+      const expiry_date = parts[2];
+      email = parts[3];
+      const plan_amount = parseInt(parts[5]);
+
+      let days = "N/A";
+      if (plan_amount === 199) days = "7 days";
+      else if (plan_amount === 49) days = "1 day";
+      else if (plan_amount === 549) days = "30 days";
+      else if (plan_amount === 4999) days = "LIFE TIME";
+
+      subject = "Payment Received For Shahid Tatkal";
+      message =
+`We received your payment of ${plan_amount}rs for the Plan of ${days}. 
+
+Username- ${user_name}
+Password- ${password}
+Plan Expiry- ${expiry_date}
+
+Thank you for your support.`;
+
+      document.getElementById("email").innerText = email;
+      document.getElementById("subject").innerText = subject;
+      document.getElementById("message").innerText = message;
+      document.getElementById("output").classList.remove('hidden');
+    }
+
+    function sendEmail() {
+      const mailtoLink = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+      window.location.href = mailtoLink;
+    }
+  </script>
+</body>
+</html>
