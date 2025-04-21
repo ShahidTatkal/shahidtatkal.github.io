@@ -98,13 +98,32 @@
     </div>
     <!-- Final Full-width Button -->
     <div>
-      <button onclick="loadNewVideo('AGi_DiUJiBQ')" class="w-full px-6 py-3 bg-green-600 text-white font-semibold rounded-2xl shadow-md hover:bg-green-700 transition duration-300">
+       <!-- <button onclick="loadNewVideo('AGi_DiUJiBQ')" class="w-full px-6 py-3 bg-green-600 text-white font-semibold rounded-2xl shadow-md hover:bg-green-700 transition duration-300"> -->
+      <button onclick="seekTo(334)" class="w-full px-6 py-3 bg-green-600 text-white font-semibold rounded-2xl shadow-md hover:bg-green-700 transition duration-300">
         How to a Buy Plan
       </button>
     </div>
   </div>
   <!-- YouTube API and Script -->
   <script>
+    let player;
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('tutorialVideo');
+    }
+
+    function seekTo(seconds) {
+      if (player && typeof player.seekTo === 'function') {
+        player.seekTo(seconds, true);
+      }
+    }
+
+    // Load YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+  </script>
+   <!-- <script>
   let player;
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('tutorialVideo');
@@ -123,15 +142,16 @@
   const tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   document.body.appendChild(tag);
-  </script>
+  </script> -->
 
 </section>
 
   <!-- Buy Subscription Section -->
 <!--   src="https://script.google.com/macros/s/AKfycby8h0u0uCggTs-HC090T7zQ2yL0O_BMSsTEzPE8ymarCOD3-yemdGvJniKHeFzzWH4v/exec?AmazonPay" -->
+<!--   src="https://script.google.com/macros/s/AKfycbzFPuWytLYp03RqDcXvL350OA7sXzb8vogeYoZ1O7CI-e9azYddMjAfpwcUs1Tp-pdLfw/exec?UPI" -->
   <section id="Buy_Subscription" class="border-t border-gray-200">
     <iframe id="myIframe"
-      src="https://script.google.com/macros/s/AKfycbzFPuWytLYp03RqDcXvL350OA7sXzb8vogeYoZ1O7CI-e9azYddMjAfpwcUs1Tp-pdLfw/exec?UPI"
+      src="https://script.google.com/macros/s/AKfycbxyL7uu6pnZ0PNyS84XxAzPumAiectowL4jrAB2IvI2Oa_kWipTKGSuszQNIDx5cUyN/exec?UPIwithoutBOTTON"
  class="w-full h-[450px] border-0">
     </iframe>
   </section>
