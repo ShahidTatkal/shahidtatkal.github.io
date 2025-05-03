@@ -1,13 +1,4 @@
 {
-  "versions": {
-    "V1.0": {
-      "message": "That is first version, <br> hello jii <br> "
-    },
-    "V1.1": {
-      "message": "click- <a href='https://shahidtatkal.github.io'>Hello</a>' 😅😅"
-    },
-    "V1.2": {
-      "message": "This version is deprecated. Please upgrade."
-    }
-  }
+  "latestVersion": "V1.5",
+  "oldVersionMessage": "This version is outdated.<br>Please download the latest version from our website."
 }
