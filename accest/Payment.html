@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Page</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <!-- Buy Subscription Section -->
+<!--   src="https://script.google.com/macros/s/AKfycbxbttF6wFO6Ozu0KbFrlFNRt_xa4H4cBgyBRMCuuKdfOvrBtIYYRG7cje0Uo8UlHVXaJQ/exec?UPIshahid" -->
+<!--   src="https://script.google.com/macros/s/AKfycbwq_6x7jJjrfCdXoomFoZZUT1kUiAs8zC4k7EssKPpG77bT1yyU2163jwoHUQ2GkV3P/exec?UPI" -->
+<!--   src="https://script.google.com/macros/s/AKfycbxh9ZINHFwMwMRPZYh_EdaLU-gZTj55gS8WaO9kteOXA_bdGgJXY72lZY_UztOeyJKA/exec?AmazonPay" -->
+  
+    <iframe id="PaymentURLframe">    </iframe>
+      <script>
+    // Pehla aur dusra URL yahan set karein
+    const firstURL = "https://script.google.com/macros/s/AKfycbxbttF6wFO6Ozu0KbFrlFNRt_xa4H4cBgyBRMCuuKdfOvrBtIYYRG7cje0Uo8UlHVXaJQ/exec?UPIshahid";
+    const secondURL = "https://script.google.com/macros/s/AKfycbxh9ZINHFwMwMRPZYh_EdaLU-gZTj55gS8WaO9kteOXA_bdGgJXY72lZY_UztOeyJKA/exec?AmazonPay";
+
+    const now = new Date();
+    const hours = now.getHours();
+
+    // Agar samay 7am (07) se 11am (11) ke beech hai
+    if (hours >= 7 && hours < 11) {
+      document.getElementById("PaymentURLframe").src = firstURL;
+    } else {
+      document.getElementById("PaymentURLframe").src = secondURL;
+    }
+  </script>
+  
+</body>
+</html>
