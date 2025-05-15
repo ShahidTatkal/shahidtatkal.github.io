@@ -11,8 +11,8 @@
 
 
 <body class="bg-cyan-100 font-[Poppins,Inter,Roboto,sans-serif] min-h-screen p-4">
-
-   <div class="bg-[#f0f0f0] rounded-lg text-center mb-2 py-4">
+  
+  <div class="bg-[#f0f0f0] rounded-lg text-center mb-2 py-4">
     <p>© 2023 <a href="https://shahidtatkal.github.io" class="text-[#0288D1] underline">Shahid Tatkal</a>. All rights reserved.</p>
   </div>
   
@@ -37,26 +37,16 @@
         <div id="emailSubject" class="bg-gray-100 p-2 rounded-md text-sm">Payment Received For Shahid Tatkal</div>
       </div>
       
-      <div style="display: none;">
-        <label class="block text-sm font-semibold mb-1">Old Format Message:</label>
-        <textarea id="plainText" rows="6" class="w-full p-2 border rounded-md text-sm font-mono" readonly></textarea>
-      </div>
-      
-      <!--      <div>
-        <label class="hidden text-sm font-semibold mb-1">HTML Email Template:</label>
-        <textarea id="htmlTemplate" rows="12" class="w-full p-2 border rounded-md font-mono text-sm" readonly></textarea>
-      </div>  -->
-      
-      <!-- Add this below the HTML Template textarea -->
       <div>
         <label class="block text-sm font-semibold mb-1">Live Preview:</label>
         <iframe id="previewFrame" class="w-full border rounded-md" style="height:200px;"></iframe>
       </div>
       
       <div class="flex justify-between gap-2 mt-4">
-        <button onclick="sendPlainEmail()" class="w-1/2 bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Send Plain Email</button>
+        <button onclick="triggerUpdate()" class="w-1/2 bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Send Plain Email</button>
         <button onclick="sendHTMLEmail()" class="w-1/2 bg-green-600 text-white py-2 rounded hover:bg-green-700">Send HTML Email</button>
       </div>
+      <p id="status"></p>
     </div>
   </div>
   
@@ -87,7 +77,7 @@
       
       const subject = "Payment Received For Shahid Tatkal";
       
-      const plainText = `We received your payment of ${plan_amount}rs for the Plan of ${days}.\n\nUsername- ${user_name}\nPassword- ${password}\nPlan Expiry- ${expiry_date}\n\nThank you for your support.`;
+    
       
       const htmlTemplate = `<!DOCTYPE html>
 <html>
@@ -147,19 +137,11 @@
       
       document.getElementById("outputSection").classList.remove("hidden");
       document.getElementById("userEmail").textContent = user_email;
-      document.getElementById("plainText").value = plainText;
-      //  document.getElementById("htmlTemplate").value = htmlTemplate;
+  
       document.getElementById("previewFrame").srcdoc = htmlTemplate;
     }
     
-    function sendPlainEmail() {
-      const email = document.getElementById("userEmail").textContent;
-      const subject = document.getElementById("emailSubject").textContent;
-      const body = document.getElementById("plainText").value;
-      
-      const mailtoLink = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailtoLink;
-    }
+
     
     function sendHTMLEmail() {
       const email = document.getElementById("userEmail").textContent;
@@ -167,6 +149,24 @@
       const mailtoLink = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}`;
       window.location.href = mailtoLink;
     }
+    
+    function triggerUpdate() {
+  const statusEl = document.getElementById("status");
+  statusEl.innerHTML = "Updating...";
+  
+  fetch("https://script.google.com/macros/s/AKfycbwQNfNeZDYBBWO4PEKRS_REnGz8ennbtzMoPHSifU7y4PLMZzVLGierRk1yYStgmDU54g/exec")
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        statusEl.innerHTML = `✅ Updated: <a href="${data.commitUrl}" target="_blank">View Commit</a>`;
+      } else {
+        statusEl.innerHTML = "❌ Failed: " + data.message;
+      }
+    })
+    .catch(err => {
+      statusEl.innerHTML = "❌ Error connecting to server";
+    });
+}
   </script>
 </body>
 
